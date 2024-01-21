@@ -13,7 +13,7 @@ import java.io.IOException;
 @WebServlet("/ufo")
 public class UFOChallengeServlet extends HttpServlet {
 
-    private AcceptUfoChallengeService acceptUfoChallengeService = new AcceptUfoChallengeService();
+    private final AcceptUfoChallengeService acceptUfoChallengeService = new AcceptUfoChallengeService();
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
