@@ -1,32 +1,38 @@
 <%@ page import="java.util.List" %>
-<%@ page import="ua.javarush.models.User" %><%--
-  Created by IntelliJ IDEA.
-  User: volodymyr_krokhmaliuk
-  Date: 01.11.2023
-  Time: 19:38
-  To change this template use File | Settings | File Templates.
---%>
+<%@ page import="ua.javarush.models.User" %>
+<%@ page import="java.util.ArrayList" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
 <html>
 <head>
-    <title>User Page</title>
+    <title>Users Page</title>
 </head>
 <body>
 <h1>Add new User</h1>
 <form action="/users" method="post">
-    FirstName : <input type="text" name="name"><br>
-    Age : <input type="number" name="age"><br>
-    Email : <input type="text" name="email"><br>
+    <label for="name">Name:</label>
+    <input id="name" type="text" name="name"><br>
+    <label for="password">Password:</label>
+    <input id="password" type="text" name="password"><br>
+    <label for="email">Email:</label>
+    <input id="email" type="text" name="email"><br>
+    <label for="birthDate">BirthDate:</label>
+    <input id="birthDate" type="date" name="birthDate"><br>
     <input type="submit" value="Add">
 </form>
 
 <h3>All Users:</h3>
 <%
-    List<User> users = (List<User>) request.getAttribute("users");
+    List<User> users = new ArrayList<>();
+    try {
+        users = (List<User>) request.getAttribute("users");
+    }
+    catch (Exception ex) {
+        throw new RuntimeException(ex);
+    }
     for (User u : users) { %>
 <%= u %>
+<br>
 <% } %>
-
-%>
 </body>
 </html>

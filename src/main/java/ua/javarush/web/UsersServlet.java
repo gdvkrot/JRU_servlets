@@ -1,9 +1,8 @@
 package ua.javarush.web;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.log4j.Log4j2;
 import ua.javarush.models.User;
-import ua.javarush.repository.UserRepository;
+import ua.javarush.repository.UserRepositoryImpl;
 import ua.javarush.service.UserService;
 
 import javax.servlet.ServletException;
@@ -12,23 +11,23 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.LocalDate;
 
+@Log4j2
 @WebServlet("/users")
-public class UserServlet extends HttpServlet {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(UserServlet.class);
-    private static Integer USER_ID_COUNTER = 1;
-
-    private UserService userService = new UserService(new UserRepository());
+public class UsersServlet extends HttpServlet {
+    private final UserService userService = new UserService(new UserRepositoryImpl());
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String name = req.getParameter("name");
+        String password = req.getParameter("password");
+        String email = req.getParameter("email");
+        LocalDate dateOfBirth = LocalDate.parse(req.getParameter("birthDate"));
 
-        User user = new User(req.getParameter("name"),
-                Integer.valueOf(req.getParameter("age")),
-                req.getParameter("email"));
+        User user = new User(name, password, dateOfBirth, email);
 
-        userService.create(USER_ID_COUNTER++, user);
+        userService.createUser(user);
         resp.setStatus(201);
         req.setAttribute("users", userService.getAllUsers());
         req.getRequestDispatcher("usersPage.jsp").forward(req, resp);
